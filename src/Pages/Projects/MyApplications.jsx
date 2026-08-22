@@ -43,18 +43,13 @@ try{
 const token = localStorage.getItem("token");
 
 
-const {data} = await axios.get(
-
-"http://localhost:8000/api/applications/my-applications",
-
-{
-
-headers:{
-Authorization:`Bearer ${token}`
-}
-
-}
-
+const { data } = await axios.get(
+  "https://devhub-backend-production-113b.up.railway.app/api/applications/my-applications",
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
 );
 
 

@@ -46,14 +46,13 @@ export default function Applicants() {
       }
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/applications/project/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+  `https://devhub-backend-production-113b.up.railway.app/api/applications/project/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       setApplications(data.applications || []);
     } catch (error) {
       console.error(
@@ -77,17 +76,17 @@ export default function Applicants() {
 
       const token = localStorage.getItem("token");
 
-      const { data } = await axios.patch(
-        `http://localhost:8000/api/applications/${applicationId}/status`,
-        {
-          status,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+     const { data } = await axios.patch(
+  `https://devhub-backend-production-113b.up.railway.app/api/applications/${applicationId}/status`,
+  {
+    status,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       if (status === "accepted") {
         alert(data.message || "Application accepted successfully.");

@@ -51,15 +51,15 @@ export default function CreateProject() {
 
       const token = localStorage.getItem("token");
 
-      const { data } = await axios.post(
-        "http://localhost:8000/api/projects",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    const { data } = await axios.post(
+  "https://devhub-backend-production-113b.up.railway.app/api/projects",
+  formData,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       alert(data.message);
 

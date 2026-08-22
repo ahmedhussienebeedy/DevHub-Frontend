@@ -37,11 +37,9 @@ export default function FreelancerDashboard() {
   const fetchProjects = async () => {
     try {
       setLoadingProjects(true);
-
-      const { data } = await axios.get(
-        "http://localhost:8000/api/projects/open/all"
-      );
-
+const { data } = await axios.get(
+  "https://devhub-backend-production-113b.up.railway.app/api/projects/open/all"
+);
       setProjects(data.projects || []);
     } catch (error) {
       console.error(
@@ -62,14 +60,14 @@ export default function FreelancerDashboard() {
 
       const token = localStorage.getItem("token");
 
-      const { data } = await axios.get(
-        "http://localhost:8000/api/projects/my-work",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+     const { data } = await axios.get(
+  "https://devhub-backend-production-113b.up.railway.app/api/projects/my-work",
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       setMyWork(data.projects || []);
       setTotalEarnings(data.totalEarnings || 0);

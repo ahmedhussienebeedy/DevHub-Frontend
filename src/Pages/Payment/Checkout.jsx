@@ -24,19 +24,19 @@ export default function Checkout() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch(
-          "http://localhost:8000/api/payments/create-payment-intent",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              projectId: id,
-            }),
-          }
-        );
+       const res = await fetch(
+  "https://devhub-backend-production-113b.up.railway.app/api/payments/create-payment-intent",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      projectId: id,
+    }),
+  }
+);
 
         const data = await res.json();
 

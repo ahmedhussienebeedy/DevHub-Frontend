@@ -20,8 +20,8 @@ export default function PaymentSuccess() {
 
         const token = localStorage.getItem("token");
 
-        const res = await fetch(
-          "http://localhost:8000/api/payments/confirm-payment",
+const res = await fetch(
+  "https://devhub-backend-production-113b.up.railway.app/api/payments/confirm-payment",
           {
             method: "POST",
             headers: {

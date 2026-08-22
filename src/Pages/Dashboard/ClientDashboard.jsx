@@ -41,14 +41,14 @@ export default function ClientDashboard() {
         return;
       }
 
-      const { data } = await axios.get(
-        "http://localhost:8000/api/projects/my-projects",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+ const { data } = await axios.get(
+  "https://devhub-backend-production-113b.up.railway.app/api/projects/my-projects",
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       setProjects(data.projects || []);
     } catch (error) {
@@ -77,12 +77,14 @@ export default function ClientDashboard() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`http://localhost:8000/api/projects/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      await axios.delete(
+  `https://devhub-backend-production-113b.up.railway.app/api/projects/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       setProjects((prev) =>
         prev.filter((project) => project._id !== id)
       );

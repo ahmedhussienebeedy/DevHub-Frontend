@@ -18,6 +18,9 @@ import {
   Clock3,
 } from "lucide-react";
 
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
+
 export default function FreelancerDashboard() {
   const [projects, setProjects] = useState([]);
   const [myWork, setMyWork] = useState([]);
@@ -37,9 +40,7 @@ export default function FreelancerDashboard() {
   const fetchProjects = async () => {
     try {
       setLoadingProjects(true);
-const { data } = await axios.get(
-  "https://devhub-backend-production-113b.up.railway.app/api/projects/open/all"
-);
+const { data } = await axios.get(`${API_URL}/projects/open/all`);
       setProjects(data.projects || []);
     } catch (error) {
       console.error(
@@ -60,8 +61,8 @@ const { data } = await axios.get(
 
       const token = localStorage.getItem("token");
 
-     const { data } = await axios.get(
-  "https://devhub-backend-production-113b.up.railway.app/api/projects/my-work",
+      const { data } = await axios.get(
+    `${API_URL}/projects/my-work`,
   {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -495,7 +496,7 @@ const { data } = await axios.get(
                     {/* Open Project */}
 
                     <Link
-                      to={`/freelancer/project/${project._id}`}
+                      to={`/projects/${project._id}`}
                       className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 px-6 py-3.5 rounded-xl text-white font-semibold transition group-hover:shadow-lg group-hover:shadow-violet-500/20"
                     >
                       View Positions & Apply

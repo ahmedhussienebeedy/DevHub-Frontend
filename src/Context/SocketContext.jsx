@@ -9,10 +9,10 @@ import NotificationToast from "../../src/Pages/Notifications/NotificationToast";
 const SocketContext = createContext();
 
 const SOCKET_URL =
-  import.meta.env.VITE_SOCKET_URL || "http://localhost:8000";
+  import.meta.env.VITE_SOCKET_URL || "https://devhub-backend-production-113b.up.railway.app";
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
 
 console.log("🌐 API_URL:", API_URL);
 console.log("🔌 SOCKET_URL:", SOCKET_URL);

@@ -15,7 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
 
 export default function Login() {
 

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
 import { useAuth } from "../../Context/AuthContext";
 
 export default function Chat() {
@@ -33,7 +36,7 @@ export default function Chat() {
     try {
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/projects/${id}`
+        `${API_URL}/projects/${id}`
       );
 
 
@@ -60,7 +63,7 @@ export default function Chat() {
 
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/messages/${id}`,
+        `${API_URL}/messages/${id}`,
         {
           headers:{
             Authorization:`Bearer ${token}`,
@@ -109,7 +112,7 @@ export default function Chat() {
 
       const { data } = await axios.post(
 
-        "http://localhost:8000/api/messages",
+        `${API_URL}/messages`,
 
         {
           projectId: id,

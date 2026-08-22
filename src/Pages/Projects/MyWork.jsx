@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
 import { Link } from "react-router-dom";
 
 import { motion } from "framer-motion";
@@ -42,7 +45,7 @@ const token = localStorage.getItem("token");
 
 const {data} = await axios.get(
 
-"http://localhost:8000/api/projects/my-work",
+`${API_URL}/projects/my-work`,
 
 {
 headers:{

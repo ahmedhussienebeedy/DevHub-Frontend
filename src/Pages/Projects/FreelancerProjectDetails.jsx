@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
+
 export default function FreelancerProjectDetails() {
 
   const { id } = useParams();
@@ -28,7 +31,7 @@ export default function FreelancerProjectDetails() {
     try {
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/projects/${id}`
+        `${API_URL}/projects/${id}`
       );
 
       setProject(data.project);
@@ -62,7 +65,7 @@ export default function FreelancerProjectDetails() {
 
       const { data } = await axios.post(
 
-        `http://localhost:8000/api/applications/${id}`,
+        `${API_URL}/applications/${id}`,
 
         {
           coverLetter,

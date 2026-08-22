@@ -17,7 +17,7 @@ import {
 
 import { useAuth } from "../../Context/AuthContext";
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
 
 export default function ProjectDetails() {
   const { id } = useParams();

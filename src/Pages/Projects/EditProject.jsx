@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
+
 export default function EditProject() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -28,7 +31,7 @@ export default function EditProject() {
       const token = localStorage.getItem("token");
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/projects/${id}`,
+        `${API_URL}/projects/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,7 +74,7 @@ export default function EditProject() {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        `http://localhost:8000/api/projects/${id}`,
+        `${API_URL}/projects/${id}`,
         {
           ...formData,
           budget: Number(formData.budget),

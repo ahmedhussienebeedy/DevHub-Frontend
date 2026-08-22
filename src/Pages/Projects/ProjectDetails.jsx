@@ -47,6 +47,34 @@ export default function ProjectDetails() {
     fetchProject();
   }, [id]);
 
+  useEffect(() => {
+    if (
+      window.location.hash !== "#positions" ||
+      user?.role !== "freelancer" ||
+      selectedPosition ||
+      !project?.team
+    ) {
+      return;
+    }
+
+    const position = project.team.find(
+      (member) => member.status !== "assigned",
+    );
+
+    if (!position) {
+      return;
+    }
+
+    setSelectedPosition(position);
+    setFormData({
+      experienceLevel: position.level || "",
+      coverLetter: "",
+      price: position.salary || "",
+      deliveryTime: project.duration || 14,
+    });
+    setShowApplyForm(true);
+  }, [project, selectedPosition, user]);
+
   const fetchProject = async () => {
     try {
       setLoading(true);

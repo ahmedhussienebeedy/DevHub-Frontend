@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../../Context/AuthContext";
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 export default function ProjectDetails() {
   const { id } = useParams();
@@ -50,9 +52,8 @@ export default function ProjectDetails() {
       setLoading(true);
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/projects/${id}`
-      );
-
+  `${API_URL}/projects/${id}`
+);
       setProject(data.project);
     } catch (error) {
       console.error(
@@ -131,9 +132,8 @@ export default function ProjectDetails() {
       setSubmitting(true);
 
       const token = localStorage.getItem("token");
-
-      const { data } = await axios.post(
-        `http://localhost:8000/api/applications/${project._id}`,
+const { data } = await axios.post(
+  `${API_URL}/applications/${project._id}`,
         {
           positionId: selectedPosition.id,
           positionRole: selectedPosition.role,

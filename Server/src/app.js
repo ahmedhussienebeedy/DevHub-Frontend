@@ -23,12 +23,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: "*",
+    origin: [
+      "http://localhost:5173",
+      "https://dev-hub-frontend-one.vercel.app",
+    ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: false,
+    credentials: true,
   })
 );
-
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(cookieParser());

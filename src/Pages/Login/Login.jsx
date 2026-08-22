@@ -14,6 +14,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 export default function Login() {
 
@@ -52,11 +54,10 @@ export default function Login() {
       setLoading(true);
 
 
-      const {data}=await axios.post(
-        "http://localhost:8000/api/auth/login",
-        formData
-      );
-
+     const { data } = await axios.post(
+  `${API_URL}/auth/login`,
+  formData
+);
 
       const currentUser = await login(data);
 

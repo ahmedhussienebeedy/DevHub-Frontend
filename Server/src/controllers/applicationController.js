@@ -182,6 +182,22 @@ export const applyToProject = async (req, res) => {
 // ======================================
 export const getProjectApplications = async (req, res) => {
   try {
+    const project = await Project.findById(req.params.projectId).select("client");
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    if (project.client.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Not allowed",
+      });
+    }
+
     const applications = await Application.find({
       project: req.params.projectId,
     })
@@ -303,6 +319,7 @@ export const updateApplicationStatus = async (req, res) => {
       // Assign freelancer to position
       position.freelancer = application.freelancer._id;
       position.status = "assigned";
+      project.freelancer = application.freelancer._id;
 
       // Accept application
       application.status = "accepted";

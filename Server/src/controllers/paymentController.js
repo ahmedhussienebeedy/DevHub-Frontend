@@ -140,6 +140,11 @@ export const confirmPayment = async (req, res) => {
 
     const project = await Project.findById(payment.project);
 
+    if (project) {
+      project.status = "in-progress";
+      await project.save();
+    }
+
     const notification = await Notification.create({
       user: payment.freelancer,
       sender: payment.client,

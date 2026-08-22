@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -17,7 +16,8 @@ import {
 
 import { useAuth } from "../../Context/AuthContext";
 const API_URL =
-  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
+  import.meta.env.VITE_API_URL ||
+  "https://devhub-backend-production-113b.up.railway.app/api";
 
 export default function ProjectDetails() {
   const { id } = useParams();
@@ -51,14 +51,12 @@ export default function ProjectDetails() {
     try {
       setLoading(true);
 
-      const { data } = await axios.get(
-  `${API_URL}/projects/${id}`
-);
+      const { data } = await axios.get(`${API_URL}/projects/${id}`);
       setProject(data.project);
     } catch (error) {
       console.error(
         "Failed to fetch project:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     } finally {
       setLoading(false);
@@ -132,8 +130,8 @@ export default function ProjectDetails() {
       setSubmitting(true);
 
       const token = localStorage.getItem("token");
-const { data } = await axios.post(
-  `${API_URL}/applications/${project._id}`,
+      const { data } = await axios.post(
+        `${API_URL}/applications/${project._id}`,
         {
           positionId: selectedPosition.id,
           positionRole: selectedPosition.role,
@@ -146,7 +144,7 @@ const { data } = await axios.post(
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       alert(data.message || "Application submitted successfully.");
@@ -165,10 +163,7 @@ const { data } = await axios.post(
     } catch (error) {
       console.error(error);
 
-      alert(
-        error.response?.data?.message ||
-          "Failed to submit application."
-      );
+      alert(error.response?.data?.message || "Failed to submit application.");
     } finally {
       setSubmitting(false);
     }
@@ -184,9 +179,7 @@ const { data } = await axios.post(
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto" />
 
-          <p className="text-slate-400 mt-5">
-            Loading project...
-          </p>
+          <p className="text-slate-400 mt-5">Loading project...</p>
         </div>
       </section>
     );
@@ -200,9 +193,7 @@ const { data } = await axios.post(
     return (
       <section className="min-h-screen bg-slate-950 flex items-center justify-center px-5">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white">
-            Project Not Found
-          </h1>
+          <h1 className="text-3xl font-bold text-white">Project Not Found</h1>
 
           <Link
             to="/freelancer"
@@ -219,14 +210,14 @@ const { data } = await axios.post(
   const positions = project.team || [];
 
   const availablePositions = positions.filter(
-    (position) => position.status !== "assigned"
+    (position) => position.status !== "assigned",
   );
+
+  const canApply = user?.role === "freelancer";
 
   return (
     <section className="min-h-screen bg-slate-950 text-white py-10 px-5">
-
       <div className="max-w-6xl mx-auto">
-
         {/* ======================================
             Back
         ====================================== */}
@@ -248,13 +239,9 @@ const { data } = await axios.post(
           animate={{ opacity: 1, y: 0 }}
           className="bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-10"
         >
-
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-
             <div className="flex-1">
-
               <div className="flex flex-wrap gap-2 mb-4">
-
                 <span className="px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-sm">
                   {project.category}
                 </span>
@@ -268,7 +255,6 @@ const { data } = await axios.post(
                 <span className="px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
                   {project.status}
                 </span>
-
               </div>
 
               <h1 className="text-4xl md:text-5xl font-black">
@@ -278,14 +264,10 @@ const { data } = await axios.post(
               <p className="text-slate-400 text-lg mt-5 leading-8">
                 {project.description}
               </p>
-
             </div>
 
             <div className="bg-slate-800 rounded-2xl p-6 min-w-[220px]">
-
-              <p className="text-slate-500 text-sm">
-                Project Budget
-              </p>
+              <p className="text-slate-500 text-sm">Project Budget</p>
 
               <p className="text-3xl font-black text-green-400 mt-2">
                 ${project.budget}
@@ -299,9 +281,7 @@ const { data } = await axios.post(
                   </span>
                 </p>
               )}
-
             </div>
-
           </div>
 
           {/* ======================================
@@ -309,7 +289,6 @@ const { data } = await axios.post(
           ====================================== */}
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
-
             <InfoCard
               icon={<BriefcaseBusiness size={18} />}
               label="Category"
@@ -326,9 +305,7 @@ const { data } = await axios.post(
               icon={<Clock3 size={18} />}
               label="Estimated Duration"
               value={
-                project.duration
-                  ? `${project.duration} Days`
-                  : "Not specified"
+                project.duration ? `${project.duration} Days` : "Not specified"
               }
             />
 
@@ -337,13 +314,10 @@ const { data } = await axios.post(
               label="Deadline"
               value={
                 project.deadline
-                  ? new Date(
-                      project.deadline
-                    ).toLocaleDateString()
+                  ? new Date(project.deadline).toLocaleDateString()
                   : "Not specified"
               }
             />
-
           </div>
 
           {/* ======================================
@@ -351,32 +325,21 @@ const { data } = await axios.post(
           ====================================== */}
 
           {project.skills?.length > 0 && (
-
             <div className="mt-10">
-
-              <h2 className="text-xl font-bold mb-4">
-                Required Skills
-              </h2>
+              <h2 className="text-xl font-bold mb-4">Required Skills</h2>
 
               <div className="flex flex-wrap gap-3">
-
                 {project.skills.map((skill, index) => (
-
                   <span
                     key={index}
                     className="bg-violet-600/10 border border-violet-500/20 text-violet-300 px-4 py-2 rounded-xl"
                   >
                     {skill}
                   </span>
-
                 ))}
-
               </div>
-
             </div>
-
           )}
-
         </motion.div>
 
         {/* ======================================
@@ -384,53 +347,33 @@ const { data } = await axios.post(
         ====================================== */}
 
         <div id="positions" className="mt-10 scroll-mt-6">
-
           <div className="mb-6">
-
-            <h2 className="text-3xl font-black">
-              🤖 AI Recommended Positions
-            </h2>
+            <h2 className="text-3xl font-black">🤖 AI Recommended Positions</h2>
 
             <p className="text-slate-400 mt-2">
               Choose the position that matches your experience and apply
               directly to that role.
             </p>
-
           </div>
 
           {positions.length === 0 ? (
-
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-10 text-center">
+              <Users size={50} className="mx-auto text-slate-600" />
 
-              <Users
-                size={50}
-                className="mx-auto text-slate-600"
-              />
-
-              <h3 className="text-xl font-bold mt-5">
-                No Positions Available
-              </h3>
+              <h3 className="text-xl font-bold mt-5">No Positions Available</h3>
 
               <p className="text-slate-400 mt-2">
                 This project does not have AI recommended positions yet.
               </p>
-
             </div>
-
           ) : (
-
             <div className="grid md:grid-cols-2 gap-6">
-
               {positions.map((position, index) => {
+                const isAssigned = position.status === "assigned";
 
-                const isAssigned =
-                  position.status === "assigned";
-
-                const isSelected =
-                  selectedPosition?.id === position.id;
+                const isSelected = selectedPosition?.id === position.id;
 
                 return (
-
                   <motion.div
                     key={position.id || index}
                     initial={{
@@ -450,13 +393,10 @@ const { data } = await axios.post(
                         : "border-slate-800 hover:border-violet-500/40"
                     }`}
                   >
-
                     {/* Position Header */}
 
                     <div className="flex items-start justify-between gap-4">
-
                       <div className="flex items-center gap-4">
-
                         <div className="w-12 h-12 rounded-2xl bg-violet-600/15 border border-violet-500/20 flex items-center justify-center">
                           <BriefcaseBusiness
                             className="text-violet-400"
@@ -465,17 +405,12 @@ const { data } = await axios.post(
                         </div>
 
                         <div>
-
-                          <h3 className="text-xl font-bold">
-                            {position.role}
-                          </h3>
+                          <h3 className="text-xl font-bold">{position.role}</h3>
 
                           <p className="text-slate-500 mt-1">
                             Position ID: {position.id}
                           </p>
-
                         </div>
-
                       </div>
 
                       <span
@@ -485,31 +420,22 @@ const { data } = await axios.post(
                             : "bg-green-500/10 border-green-500/20 text-green-400"
                         }`}
                       >
-                        {isAssigned
-                          ? "Assigned"
-                          : "Available"}
+                        {isAssigned ? "Assigned" : "Available"}
                       </span>
-
                     </div>
 
                     {/* Position Details */}
 
                     <div className="grid grid-cols-2 gap-4 mt-7">
-
                       <div className="bg-slate-800/70 rounded-xl p-4">
-
-                        <p className="text-xs text-slate-500">
-                          Required Level
-                        </p>
+                        <p className="text-xs text-slate-500">Required Level</p>
 
                         <p className="font-bold text-violet-400 mt-1">
                           {position.level}
                         </p>
-
                       </div>
 
                       <div className="bg-slate-800/70 rounded-xl p-4">
-
                         <p className="text-xs text-slate-500">
                           Estimated Salary
                         </p>
@@ -517,48 +443,38 @@ const { data } = await axios.post(
                         <p className="font-bold text-green-400 mt-1">
                           ${position.salary || 0}
                         </p>
-
                       </div>
-
                     </div>
 
                     {/* Applicants */}
 
                     <div className="flex items-center gap-2 text-sm text-slate-400 mt-5">
-
                       <Users size={16} />
-
                       {position.applicants?.length || 0} applicants
-
                     </div>
 
                     {/* Apply Button */}
 
-                    <button
-                      disabled={isAssigned}
-                      onClick={() =>
-                        handleSelectPosition(position)
-                      }
-                      className={`mt-6 w-full py-3.5 rounded-xl font-semibold transition ${
-                        isAssigned
-                          ? "bg-slate-800 text-slate-500 cursor-not-allowed"
-                          : "bg-violet-600 hover:bg-violet-700 hover:shadow-lg hover:shadow-violet-500/20"
-                      }`}
-                    >
-                      {isAssigned
-                        ? "Position Already Assigned"
-                        : "Apply for this Position →"}
-                    </button>
-
+                    {canApply && (
+                      <button
+                        disabled={isAssigned}
+                        onClick={() => handleSelectPosition(position)}
+                        className={`mt-6 w-full py-3.5 rounded-xl font-semibold transition ${
+                          isAssigned
+                            ? "bg-slate-800 text-slate-500 cursor-not-allowed"
+                            : "bg-violet-600 hover:bg-violet-700 hover:shadow-lg hover:shadow-violet-500/20"
+                        }`}
+                      >
+                        {isAssigned
+                          ? "Position Already Assigned"
+                          : "Apply for this Position →"}
+                      </button>
+                    )}
                   </motion.div>
-
                 );
               })}
-
             </div>
-
           )}
-
         </div>
 
         {/* ======================================
@@ -566,7 +482,6 @@ const { data } = await axios.post(
         ====================================== */}
 
         {showApplyForm && selectedPosition && (
-
           <motion.div
             initial={{
               opacity: 0,
@@ -578,13 +493,9 @@ const { data } = await axios.post(
             }}
             className="mt-10"
           >
-
             <div className="bg-slate-900 border border-violet-500/30 rounded-3xl p-8 md:p-10">
-
               <div className="flex items-start justify-between gap-5 mb-8">
-
                 <div>
-
                   <p className="text-violet-400 text-sm font-semibold">
                     Applying For
                   </p>
@@ -599,7 +510,6 @@ const { data } = await axios.post(
                       {selectedPosition.level}
                     </span>
                   </p>
-
                 </div>
 
                 <button
@@ -612,18 +522,12 @@ const { data } = await axios.post(
                 >
                   <X size={20} />
                 </button>
-
               </div>
 
-              <form
-                onSubmit={handleApply}
-                className="space-y-6"
-              >
-
+              <form onSubmit={handleApply} className="space-y-6">
                 {/* Experience */}
 
                 <div>
-
                   <label className="block text-sm text-slate-400 mb-2">
                     Your Experience Level
                   </label>
@@ -634,31 +538,19 @@ const { data } = await axios.post(
                     onChange={handleChange}
                     className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:border-violet-500"
                   >
+                    <option value="">Select your experience</option>
 
-                    <option value="">
-                      Select your experience
-                    </option>
+                    <option value="Junior">Junior</option>
 
-                    <option value="Junior">
-                      Junior
-                    </option>
+                    <option value="Mid">Mid</option>
 
-                    <option value="Mid">
-                      Mid
-                    </option>
-
-                    <option value="Senior">
-                      Senior
-                    </option>
-
+                    <option value="Senior">Senior</option>
                   </select>
-
                 </div>
 
                 {/* Cover Letter */}
 
                 <div>
-
                   <label className="block text-sm text-slate-400 mb-2">
                     Cover Letter
                   </label>
@@ -671,21 +563,17 @@ const { data } = await axios.post(
                     placeholder="Tell the client why you are the right person for this position..."
                     className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 outline-none focus:border-violet-500 resize-none"
                   />
-
                 </div>
 
                 {/* Price + Delivery */}
 
                 <div className="grid md:grid-cols-2 gap-5">
-
                   <div>
-
                     <label className="block text-sm text-slate-400 mb-2">
                       Your Price ($)
                     </label>
 
                     <div className="relative">
-
                       <DollarSign
                         size={18}
                         className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
@@ -699,23 +587,19 @@ const { data } = await axios.post(
                         onChange={handleChange}
                         className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-11 pr-4 py-3 text-white outline-none focus:border-violet-500"
                       />
-
                     </div>
 
                     <p className="text-xs text-slate-500 mt-2">
                       AI estimated salary: ${selectedPosition.salary || 0}
                     </p>
-
                   </div>
 
                   <div>
-
                     <label className="block text-sm text-slate-400 mb-2">
                       Delivery Time (Days)
                     </label>
 
                     <div className="relative">
-
                       <Clock3
                         size={18}
                         className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
@@ -729,11 +613,8 @@ const { data } = await axios.post(
                         onChange={handleChange}
                         className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-11 pr-4 py-3 text-white outline-none focus:border-violet-500"
                       />
-
                     </div>
-
                   </div>
-
                 </div>
 
                 {/* Submit */}
@@ -743,7 +624,6 @@ const { data } = await axios.post(
                   disabled={submitting}
                   className="w-full flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-900 disabled:cursor-not-allowed py-4 rounded-xl font-bold text-lg transition"
                 >
-
                   {submitting ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -755,15 +635,10 @@ const { data } = await axios.post(
                       Submit Application
                     </>
                   )}
-
                 </button>
-
               </form>
-
             </div>
-
           </motion.div>
-
         )}
 
         {/* ======================================
@@ -771,22 +646,16 @@ const { data } = await axios.post(
         ====================================== */}
 
         {user && (
-
           <div className="mt-8 text-center">
-
             <Link
               to={`/project/${project._id}/chat`}
               className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-6 py-3 rounded-xl font-semibold transition"
             >
               Chat with Client 💬
             </Link>
-
           </div>
-
         )}
-
       </div>
-
     </section>
   );
 }
@@ -795,23 +664,15 @@ const { data } = await axios.post(
 // Info Card
 // ======================================
 
-function InfoCard({
-  icon,
-  label,
-  value,
-}) {
+function InfoCard({ icon, label, value }) {
   return (
     <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-5">
-
       <div className="flex items-center gap-2 text-slate-500 text-sm">
         {icon}
         {label}
       </div>
 
-      <p className="text-white font-bold mt-2">
-        {value}
-      </p>
-
+      <p className="text-white font-bold mt-2">{value}</p>
     </div>
   );
 }

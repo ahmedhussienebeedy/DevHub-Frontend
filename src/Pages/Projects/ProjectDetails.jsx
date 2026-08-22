@@ -383,7 +383,7 @@ const { data } = await axios.post(
             AI Team / Positions
         ====================================== */}
 
-        <div className="mt-10">
+        <div id="positions" className="mt-10 scroll-mt-6">
 
           <div className="mb-6">
 

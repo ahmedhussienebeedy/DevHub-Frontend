@@ -496,7 +496,7 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                     {/* Open Project */}
 
                     <Link
-                      to={`/projects/${project._id}`}
+                      to={`/projects/${project._id}#positions`}
                       className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 px-6 py-3.5 rounded-xl text-white font-semibold transition group-hover:shadow-lg group-hover:shadow-violet-500/20"
                     >
                       View Positions & Apply

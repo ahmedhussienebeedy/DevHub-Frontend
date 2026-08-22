@@ -3,16 +3,14 @@ import axios from "axios";
 
 const AuthContext = createContext();
 
-const API = "http://localhost:8000/api";
+const API =
+  "https://devhub-backend-production-113b.up.railway.app/api";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
 
-  // =========================
-  // Get Current User
-  // =========================
   const getCurrentUser = async (jwtToken) => {
     try {
       const { data } = await axios.get(`${API}/users/me`, {
@@ -38,9 +36,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // =========================
-  // Auto Login
-  // =========================
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
 
@@ -52,9 +47,6 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // =========================
-  // Login
-  // =========================
   const login = async (data) => {
     localStorage.setItem("token", data.token);
 
@@ -63,18 +55,14 @@ export function AuthProvider({ children }) {
     return await getCurrentUser(data.token);
   };
 
-  // =========================
-  // Logout
-  // =========================
   const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
 
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
+    setToken(null);
+    setUser(null);
+  };
 
-  setToken(null);
-  setUser(null);
-
-};
   return (
     <AuthContext.Provider
       value={{

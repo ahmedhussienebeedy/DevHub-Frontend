@@ -543,7 +543,7 @@ export default function ClientDashboard() {
 
 {!project.freelancer && project.status === "open" && (
   <Link
-    to={`/client/projects/${project._id}/applicants`}
+    to={`/client/projects/${project._id}/applications`}
     className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600/10 border border-violet-500/20 px-4 py-3 font-semibold text-violet-400 hover:bg-violet-600 hover:text-white transition"
   >
     <UsersRound size={18} />

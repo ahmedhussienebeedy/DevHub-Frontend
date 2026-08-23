@@ -48,12 +48,7 @@ export default function ProjectDetails() {
   }, [id]);
 
   useEffect(() => {
-    if (
-      window.location.hash !== "#positions" ||
-      user?.role !== "freelancer" ||
-      selectedPosition ||
-      !project?.team
-    ) {
+    if (user?.role !== "freelancer" || selectedPosition || !project?.team) {
       return;
     }
 

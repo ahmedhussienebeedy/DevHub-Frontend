@@ -41,20 +41,20 @@ export default function ClientDashboard() {
         return;
       }
 
- const { data } = await axios.get(
-  "https://devhub-backend-production-113b.up.railway.app/api/projects/my-projects",
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      const { data } = await axios.get(
+        "https://devhub-backend-production-113b.up.railway.app/api/projects/my-projects",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       setProjects(data.projects || []);
     } catch (error) {
       console.error(
         "Failed to fetch projects:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
 
       setProjects([]);
@@ -69,7 +69,7 @@ export default function ClientDashboard() {
 
   const deleteProject = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this project?"
+      "Are you sure you want to delete this project?",
     );
 
     if (!confirmDelete) return;
@@ -78,26 +78,21 @@ export default function ClientDashboard() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-  `https://devhub-backend-production-113b.up.railway.app/api/projects/${id}`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
-      setProjects((prev) =>
-        prev.filter((project) => project._id !== id)
+        `https://devhub-backend-production-113b.up.railway.app/api/projects/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
+      setProjects((prev) => prev.filter((project) => project._id !== id));
     } catch (error) {
       console.error(
         "Failed to delete project:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
 
-      alert(
-        error.response?.data?.message ||
-          "Failed to delete project."
-      );
+      alert(error.response?.data?.message || "Failed to delete project.");
     }
   };
 
@@ -107,16 +102,15 @@ export default function ClientDashboard() {
 
   const activeProjects = projects.filter(
     (project) =>
-      project.status === "in-progress" ||
-      project.status === "active"
+      project.status === "in-progress" || project.status === "active",
   ).length;
 
   const completedProjects = projects.filter(
-    (project) => project.status === "completed"
+    (project) => project.status === "completed",
   ).length;
 
   const projectsWithFreelancers = projects.filter(
-    (project) => project.freelancer
+    (project) => project.freelancer,
   ).length;
 
   // ======================================
@@ -124,7 +118,7 @@ export default function ClientDashboard() {
   // ======================================
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
+    <div className="min-h-screen min-w-0 bg-slate-950 text-white">
       {/* ======================================
           Background Video
       ====================================== */}
@@ -169,7 +163,7 @@ export default function ClientDashboard() {
         transition={{
           duration: 0.8,
         }}
-        className="relative z-10 max-w-7xl mx-auto px-6 py-10"
+        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10"
       >
         {/* ======================================
             Header
@@ -232,22 +226,14 @@ export default function ClientDashboard() {
                 <FolderKanban size={24} />
               </div>
 
-              <span className="text-xs text-slate-500">
-                All time
-              </span>
+              <span className="text-xs text-slate-500">All time</span>
             </div>
 
-            <p className="text-slate-400 text-sm mt-5">
-              Total Projects
-            </p>
+            <p className="text-slate-400 text-sm mt-5">Total Projects</p>
 
-            <p className="text-3xl font-black mt-1">
-              {projects.length}
-            </p>
+            <p className="text-3xl font-black mt-1">{projects.length}</p>
 
-            <p className="text-xs text-slate-500 mt-2">
-              All your projects
-            </p>
+            <p className="text-xs text-slate-500 mt-2">All your projects</p>
           </motion.div>
 
           {/* Active Projects */}
@@ -268,22 +254,14 @@ export default function ClientDashboard() {
                 <Clock3 size={24} />
               </div>
 
-              <span className="text-xs text-slate-500">
-                Current
-              </span>
+              <span className="text-xs text-slate-500">Current</span>
             </div>
 
-            <p className="text-slate-400 text-sm mt-5">
-              Active Projects
-            </p>
+            <p className="text-slate-400 text-sm mt-5">Active Projects</p>
 
-            <p className="text-3xl font-black mt-1">
-              {activeProjects}
-            </p>
+            <p className="text-3xl font-black mt-1">{activeProjects}</p>
 
-            <p className="text-xs text-slate-500 mt-2">
-              Currently in progress
-            </p>
+            <p className="text-xs text-slate-500 mt-2">Currently in progress</p>
           </motion.div>
 
           {/* Freelancers */}
@@ -304,22 +282,16 @@ export default function ClientDashboard() {
                 <UsersRound size={24} />
               </div>
 
-              <span className="text-xs text-slate-500">
-                Assigned
-              </span>
+              <span className="text-xs text-slate-500">Assigned</span>
             </div>
 
-            <p className="text-slate-400 text-sm mt-5">
-              Freelancers
-            </p>
+            <p className="text-slate-400 text-sm mt-5">Freelancers</p>
 
             <p className="text-3xl font-black mt-1">
               {projectsWithFreelancers}
             </p>
 
-            <p className="text-xs text-slate-500 mt-2">
-              Assigned to projects
-            </p>
+            <p className="text-xs text-slate-500 mt-2">Assigned to projects</p>
           </motion.div>
 
           {/* Completed */}
@@ -340,18 +312,12 @@ export default function ClientDashboard() {
                 <CheckCircle2 size={24} />
               </div>
 
-              <span className="text-xs text-slate-500">
-                Finished
-              </span>
+              <span className="text-xs text-slate-500">Finished</span>
             </div>
 
-            <p className="text-slate-400 text-sm mt-5">
-              Completed
-            </p>
+            <p className="text-slate-400 text-sm mt-5">Completed</p>
 
-            <p className="text-3xl font-black mt-1">
-              {completedProjects}
-            </p>
+            <p className="text-3xl font-black mt-1">{completedProjects}</p>
 
             <p className="text-xs text-slate-500 mt-2">
               Successfully completed
@@ -365,9 +331,7 @@ export default function ClientDashboard() {
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div>
-            <h2 className="text-3xl font-black">
-              Recent Projects
-            </h2>
+            <h2 className="text-3xl font-black">Recent Projects</h2>
 
             <p className="text-slate-400 mt-1">
               Manage your projects and freelancers.
@@ -375,8 +339,7 @@ export default function ClientDashboard() {
           </div>
 
           <span className="text-sm text-slate-500">
-            {projects.length}{" "}
-            {projects.length === 1 ? "project" : "projects"}
+            {projects.length} {projects.length === 1 ? "project" : "projects"}
           </span>
         </div>
 
@@ -410,15 +373,10 @@ export default function ClientDashboard() {
             className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-12 text-center"
           >
             <div className="w-20 h-20 mx-auto rounded-3xl bg-violet-600/10 border border-violet-500/20 flex items-center justify-center">
-              <FolderKanban
-                size={36}
-                className="text-violet-400"
-              />
+              <FolderKanban size={36} className="text-violet-400" />
             </div>
 
-            <h3 className="text-2xl font-bold mt-6">
-              No Projects Yet 🚀
-            </h3>
+            <h3 className="text-2xl font-bold mt-6">No Projects Yet 🚀</h3>
 
             <p className="text-slate-400 mt-3 max-w-md mx-auto">
               Create your first project and start working with talented
@@ -476,9 +434,9 @@ export default function ClientDashboard() {
                       project.status === "completed"
                         ? "bg-green-500/10 border-green-500/20 text-green-400"
                         : project.status === "in-progress" ||
-                          project.status === "active"
-                        ? "bg-blue-500/10 border-blue-500/20 text-blue-400"
-                        : "bg-violet-500/10 border-violet-500/20 text-violet-400"
+                            project.status === "active"
+                          ? "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                          : "bg-violet-500/10 border-violet-500/20 text-violet-400"
                     }`}
                   >
                     {project.status || "open"}
@@ -510,9 +468,7 @@ export default function ClientDashboard() {
 
                 <div className="grid grid-cols-2 gap-3 mt-6">
                   <div className="bg-slate-900/70 rounded-xl p-3">
-                    <p className="text-xs text-slate-500">
-                      Budget
-                    </p>
+                    <p className="text-xs text-slate-500">Budget</p>
 
                     <p className="text-green-400 font-bold mt-1">
                       ${project.budget || 0}
@@ -520,9 +476,7 @@ export default function ClientDashboard() {
                   </div>
 
                   <div className="bg-slate-900/70 rounded-xl p-3">
-                    <p className="text-xs text-slate-500">
-                      Freelancer
-                    </p>
+                    <p className="text-xs text-slate-500">Freelancer</p>
 
                     <div className="flex items-center gap-2 mt-1">
                       <UserRound
@@ -531,26 +485,23 @@ export default function ClientDashboard() {
                       />
 
                       <p className="text-white font-semibold truncate">
-                        {project.freelancer?.name ||
-                          "Not assigned"}
+                        {project.freelancer?.name || "Not assigned"}
                       </p>
                     </div>
                   </div>
                 </div>
 
-              
-{/* Applications */}
+                {/* Applications */}
 
-{!project.freelancer && project.status === "open" && (
-  <Link
-    to={`/client/projects/${project._id}/applications`}
-    className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600/10 border border-violet-500/20 px-4 py-3 font-semibold text-violet-400 hover:bg-violet-600 hover:text-white transition"
-  >
-    <UsersRound size={18} />
-    View Applications
-  </Link>
-)}
-
+                {!project.freelancer && project.status === "open" && (
+                  <Link
+                    to={`/client/projects/${project._id}/applications`}
+                    className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600/10 border border-violet-500/20 px-4 py-3 font-semibold text-violet-400 hover:bg-violet-600 hover:text-white transition"
+                  >
+                    <UsersRound size={18} />
+                    View Applications
+                  </Link>
+                )}
 
                 {/* Actions */}
 
@@ -567,9 +518,7 @@ export default function ClientDashboard() {
 
                   <button
                     type="button"
-                    onClick={() =>
-                      deleteProject(project._id)
-                    }
+                    onClick={() => deleteProject(project._id)}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 px-5 py-3 font-semibold text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-red-500/40 active:scale-95"
                   >
                     <Trash2 size={18} />
@@ -583,4 +532,4 @@ export default function ClientDashboard() {
       </motion.main>
     </div>
   );
-} 
+}

@@ -18,7 +18,16 @@ function detectFeatures(description = "") {
 
 export function analyzeProject(category, type, description = "") {
 
-  const baseTeam = positions[category]?.[type] || [];
+  const baseTeam = positions[category]?.[type] || [
+    {
+      role: category === "design" ? "Product Designer" : "Project Specialist",
+      level: "Mid",
+    },
+    {
+      role: category === "marketing" ? "Marketing Specialist" : "Frontend Developer",
+      level: "Mid",
+    },
+  ];
 
   const finalTeam = [...baseTeam];
 
@@ -67,23 +76,23 @@ export function analyzeProject(category, type, description = "") {
   const uniqueTeam = [];
 
   finalTeam.forEach((member) => {
-   const exists = uniqueTeam.find(
-  (item) => item.role === member.role
-);
+    const exists = uniqueTeam.find(
+      (item) => item.role === member.role
+    );
 
-if (!exists) {
-  uniqueTeam.push(member);
-} else {
-  const levels = {
-    Junior: 1,
-    Mid: 2,
-    Senior: 3,
-  };
+    if (!exists) {
+      uniqueTeam.push(member);
+    } else {
+      const levels = {
+        Junior: 1,
+        Mid: 2,
+        Senior: 3,
+      };
 
-  if (levels[member.level] > levels[exists.level]) {
-    exists.level = member.level;
-  }
-}
+      if (levels[member.level] > levels[exists.level]) {
+        exists.level = member.level;
+      }
+    }
   });
 
   // =========================
@@ -94,29 +103,29 @@ if (!exists) {
 
   const team = uniqueTeam.map((member) => {
 
-  const salary = pricing[member.level] || 0;
+    const salary = pricing[member.level] || 0;
 
-  budget += salary;
+    budget += salary;
 
-  return {
+    return {
 
-    id: crypto.randomUUID(),
+      id: crypto.randomUUID(),
 
-    role: member.role,
+      role: member.role,
 
-    level: member.level,
+      level: member.level,
 
-    salary,
+      salary,
 
-    applicants: [],
+      applicants: [],
 
-    freelancer: null,
+      freelancer: null,
 
-    status: "waiting",
+      status: "waiting",
 
-  };
+    };
 
-});
+  });
   // =========================
   // Complexity
   // =========================
@@ -135,13 +144,13 @@ if (!exists) {
 
   let duration = team.length * 10;
 
-if (complexity === "Hard") {
-  duration += 20;
-}
+  if (complexity === "Hard") {
+    duration += 20;
+  }
 
-if (complexity === "Enterprise") {
-  duration += 40;
-}
+  if (complexity === "Enterprise") {
+    duration += 40;
+  }
 
   // =========================
   // Match Score
@@ -149,25 +158,25 @@ if (complexity === "Enterprise") {
 
   let match = 92;
 
-match += features.length;
+  match += features.length;
 
-if (team.length >= 5) {
-  match += 2;
-}
+  if (team.length >= 5) {
+    match += 2;
+  }
 
-if (team.length >= 8) {
-  match += 2;
-}
+  if (team.length >= 8) {
+    match += 2;
+  }
 
-match = Math.min(match, 99);
+  match = Math.min(match, 99);
 
- return {
-  features,
-  team,
- budget,
-  duration,
-  complexity,
-  match,
-  positions: team.length,
-};
+  return {
+    features,
+    team,
+    budget,
+    duration,
+    complexity,
+    match,
+    positions: team.length,
+  };
 }

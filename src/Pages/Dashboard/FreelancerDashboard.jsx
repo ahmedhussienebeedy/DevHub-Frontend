@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -19,7 +18,8 @@ import {
 } from "lucide-react";
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "https://devhub-backend-production-113b.up.railway.app/api";
+  import.meta.env.VITE_API_URL ||
+  "https://devhub-backend-production-113b.up.railway.app/api";
 
 export default function FreelancerDashboard() {
   const [projects, setProjects] = useState([]);
@@ -40,12 +40,12 @@ export default function FreelancerDashboard() {
   const fetchProjects = async () => {
     try {
       setLoadingProjects(true);
-const { data } = await axios.get(`${API_URL}/projects/open/all`);
+      const { data } = await axios.get(`${API_URL}/projects/open/all`);
       setProjects(data.projects || []);
     } catch (error) {
       console.error(
         "Failed to fetch projects:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     } finally {
       setLoadingProjects(false);
@@ -61,21 +61,18 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
 
       const token = localStorage.getItem("token");
 
-      const { data } = await axios.get(
-    `${API_URL}/projects/my-work`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      const { data } = await axios.get(`${API_URL}/projects/my-work`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setMyWork(data.projects || []);
       setTotalEarnings(data.totalEarnings || 0);
     } catch (error) {
       console.error(
         "Failed to fetch my work:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     } finally {
       setLoadingWork(false);
@@ -83,7 +80,7 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
   };
 
   return (
-    <section className="min-h-screen bg-slate-950 relative overflow-hidden">
+    <section className="min-h-screen min-w-0 bg-slate-950 relative">
       {/* ======================================
           Background
       ====================================== */}
@@ -96,8 +93,7 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
         <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-fuchsia-500/10 blur-[120px] rounded-full" />
       </div>
 
-      <div className="relative z-10 px-5 py-10 max-w-7xl mx-auto">
-
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-5 py-8 sm:py-10">
         {/* ======================================
             Header
         ====================================== */}
@@ -109,7 +105,6 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
           className="mb-10"
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-
             <div>
               <p className="text-violet-400 font-semibold mb-2">
                 Freelancer Dashboard
@@ -125,7 +120,6 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
             </div>
 
             <div className="flex flex-wrap gap-3">
-
               <Link
                 to="/freelancer/applications"
                 className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 px-5 py-3 rounded-xl text-white font-semibold transition hover:scale-105"
@@ -141,7 +135,6 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                 <FolderKanban size={19} />
                 My Work
               </Link>
-
             </div>
           </div>
         </motion.div>
@@ -151,7 +144,6 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
         ====================================== */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
-
           <StatsCard
             icon={<FolderOpen size={24} />}
             title="Available Projects"
@@ -179,7 +171,6 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
             value="Freelancer"
             description="Active account"
           />
-
         </div>
 
         {/* ======================================
@@ -187,9 +178,7 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
         ====================================== */}
 
         <div className="mb-8">
-
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
-
             <div>
               <h2 className="text-3xl font-black text-white">
                 Available Projects
@@ -205,7 +194,6 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
               <Hand size={17} className="text-violet-400" />
               Select your best position
             </div>
-
           </div>
 
           {/* ======================================
@@ -213,20 +201,14 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
           ====================================== */}
 
           {loadingProjects && (
-
             <div className="grid md:grid-cols-2 gap-6">
-
               {[1, 2, 3, 4].map((item) => (
-
                 <div
                   key={item}
                   className="h-80 rounded-3xl bg-white/5 border border-white/10 animate-pulse"
                 />
-
               ))}
-
             </div>
-
           )}
 
           {/* ======================================
@@ -234,16 +216,12 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
           ====================================== */}
 
           {!loadingProjects && projects.length === 0 && (
-
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-12 text-center"
             >
-              <FolderOpen
-                size={55}
-                className="mx-auto text-slate-600 mb-5"
-              />
+              <FolderOpen size={55} className="mx-auto text-slate-600 mb-5" />
 
               <h3 className="text-2xl font-bold text-white">
                 No Projects Available
@@ -253,7 +231,6 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                 Check again later for new opportunities.
               </p>
             </motion.div>
-
           )}
 
           {/* ======================================
@@ -261,19 +238,15 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
           ====================================== */}
 
           {!loadingProjects && projects.length > 0 && (
-
             <div className="grid md:grid-cols-2 gap-6">
-
               {projects.map((project, index) => {
-
                 const positions = project.team || [];
 
                 const availablePositions = positions.filter(
-                  (position) => position.status !== "assigned"
+                  (position) => position.status !== "assigned",
                 );
 
                 return (
-
                   <motion.div
                     key={project._id}
                     initial={{
@@ -292,33 +265,27 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                     }}
                     className="group bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-7 shadow-2xl transition-all hover:border-violet-500/50 hover:shadow-violet-500/10"
                   >
-
                     {/* Project Header */}
 
                     <div className="flex justify-between items-start gap-4">
-
-                      <div className="flex-1">
-
-                        <h3 className="text-2xl font-bold text-white group-hover:text-violet-300 transition">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="break-words text-2xl font-bold text-white group-hover:text-violet-300 transition">
                           {project.title}
                         </h3>
 
                         <p className="text-slate-400 mt-3 line-clamp-3">
                           {project.description}
                         </p>
-
                       </div>
 
                       <span className="bg-green-500/10 border border-green-500/30 text-green-400 px-3 py-1.5 rounded-full text-sm whitespace-nowrap">
                         {project.status}
                       </span>
-
                     </div>
 
                     {/* Project Info */}
 
                     <div className="grid grid-cols-2 gap-4 mt-7">
-
                       <InfoBox
                         label="Project Budget"
                         value={`$${project.budget}`}
@@ -346,46 +313,34 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                         value={`${availablePositions.length} Available`}
                         icon={<Users size={17} />}
                       />
-
                     </div>
 
                     {/* Skills */}
 
                     {project.skills?.length > 0 && (
-
                       <div className="mt-6">
-
                         <p className="text-sm text-slate-500 mb-3">
                           Required Skills
                         </p>
 
                         <div className="flex flex-wrap gap-2">
-
                           {project.skills.map((skill, skillIndex) => (
-
                             <span
                               key={skillIndex}
                               className="bg-white/10 border border-white/10 px-3 py-1.5 rounded-lg text-sm text-slate-200"
                             >
                               {skill}
                             </span>
-
                           ))}
-
                         </div>
-
                       </div>
-
                     )}
 
                     {/* Position Preview */}
 
                     {positions.length > 0 && (
-
                       <div className="mt-6 bg-slate-900/70 border border-slate-800 rounded-2xl p-5">
-
                         <div className="flex items-center justify-between mb-4">
-
                           <h4 className="font-bold text-white">
                             Recommended Positions
                           </h4>
@@ -393,25 +348,19 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                           <span className="text-xs text-violet-400">
                             {availablePositions.length} available
                           </span>
-
                         </div>
 
                         <div className="space-y-2">
-
-                          {availablePositions.slice(0, 3).map(
-                            (position, positionIndex) => (
-
+                          {availablePositions
+                            .slice(0, 3)
+                            .map((position, positionIndex) => (
                               <div
                                 key={
-                                  position.id ||
-                                  position._id ||
-                                  positionIndex
+                                  position.id || position._id || positionIndex
                                 }
                                 className="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3"
                               >
-
                                 <div className="flex items-center gap-3">
-
                                   <div className="w-9 h-9 rounded-lg bg-violet-600/20 flex items-center justify-center">
                                     <BriefcaseBusiness
                                       size={17}
@@ -419,78 +368,55 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                                     />
                                   </div>
 
-                                  <div>
-
-                                    <p className="text-white font-semibold text-sm">
+                                  <div className="min-w-0">
+                                    <p className="truncate text-white font-semibold text-sm">
                                       {position.role}
                                     </p>
 
                                     <p className="text-slate-500 text-xs">
                                       {position.level}
                                     </p>
-
                                   </div>
-
                                 </div>
 
-                                <span className="text-green-400 text-sm font-semibold">
+                                <span className="shrink-0 text-green-400 text-sm font-semibold">
                                   ${position.salary || 0}
                                 </span>
-
                               </div>
-
-                            )
-                          )}
-
+                            ))}
                         </div>
 
                         {availablePositions.length > 3 && (
-
                           <p className="text-xs text-slate-500 mt-3">
                             + {availablePositions.length - 3} more positions
                           </p>
-
                         )}
-
                       </div>
-
                     )}
 
                     {/* Client */}
 
                     <div className="flex items-center justify-between mt-6 pt-5 border-t border-white/10">
-
                       <div>
-
-                        <p className="text-xs text-slate-500">
-                          Posted by
-                        </p>
+                        <p className="text-xs text-slate-500">Posted by</p>
 
                         <p className="text-white font-semibold mt-1">
                           {project.client?.name || "Client"}
                         </p>
-
                       </div>
 
                       {project.deadline && (
-
                         <div className="text-right">
-
                           <div className="flex items-center gap-1.5 text-slate-500 text-xs">
                             <Clock3 size={14} />
                             Deadline
                           </div>
 
                           <p className="text-slate-300 text-sm mt-1">
-                            {new Date(
-                              project.deadline
-                            ).toLocaleDateString()}
+                            {new Date(project.deadline).toLocaleDateString()}
                           </p>
-
                         </div>
-
                       )}
-
                     </div>
 
                     {/* Open Project */}
@@ -505,16 +431,11 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                         className="transition-transform group-hover:translate-x-1"
                       />
                     </Link>
-
                   </motion.div>
-
                 );
               })}
-
             </div>
-
           )}
-
         </div>
 
         {/* ======================================
@@ -522,57 +443,39 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
         ====================================== */}
 
         {!loadingWork && myWork.length > 0 && (
-
           <div className="mt-16">
-
             <div className="mb-6">
-
-              <h2 className="text-3xl font-black text-white">
-                Active Work
-              </h2>
+              <h2 className="text-3xl font-black text-white">Active Work</h2>
 
               <p className="text-slate-400 mt-1">
                 Projects you are currently working on.
               </p>
-
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-
               {myWork.map((project) => (
-
                 <motion.div
                   key={project._id}
                   whileHover={{ y: -5 }}
                   className="bg-white/5 backdrop-blur-xl border border-green-500/20 rounded-3xl p-6"
                 >
-
                   <div className="flex items-start justify-between">
-
                     <div>
-
                       <h3 className="text-xl font-bold text-white">
                         {project.title}
                       </h3>
 
-                      <p className="text-slate-400 mt-2">
-                        {project.category}
-                      </p>
-
+                      <p className="text-slate-400 mt-2">{project.category}</p>
                     </div>
 
                     <span className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
                       In Progress
                     </span>
-
                   </div>
 
                   <div className="flex justify-between mt-6">
-
                     <div>
-                      <p className="text-xs text-slate-500">
-                        Budget
-                      </p>
+                      <p className="text-xs text-slate-500">Budget</p>
 
                       <p className="text-green-400 font-bold mt-1">
                         ${project.budget}
@@ -580,27 +483,18 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
                     </div>
 
                     <div className="text-right">
-                      <p className="text-xs text-slate-500">
-                        Client
-                      </p>
+                      <p className="text-xs text-slate-500">Client</p>
 
                       <p className="text-white font-semibold mt-1">
                         {project.client?.name || "Client"}
                       </p>
                     </div>
-
                   </div>
-
                 </motion.div>
-
               ))}
-
             </div>
-
           </div>
-
         )}
-
       </div>
     </section>
   );
@@ -610,12 +504,7 @@ const { data } = await axios.get(`${API_URL}/projects/open/all`);
 // Stats Card
 // ======================================
 
-function StatsCard({
-  icon,
-  title,
-  value,
-  description,
-}) {
+function StatsCard({ icon, title, value, description }) {
   return (
     <motion.div
       whileHover={{
@@ -628,31 +517,19 @@ function StatsCard({
       }}
       className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 text-white shadow-2xl"
     >
-
       <div className="flex items-start justify-between">
-
         <div className="w-12 h-12 rounded-2xl bg-violet-600/15 border border-violet-500/20 flex items-center justify-center text-violet-400">
           {icon}
         </div>
 
-        <span className="text-xs text-green-400">
-          Active
-        </span>
-
+        <span className="text-xs text-green-400">Active</span>
       </div>
 
-      <p className="text-slate-400 mt-5">
-        {title}
-      </p>
+      <p className="text-slate-400 mt-5">{title}</p>
 
-      <h3 className="text-3xl font-black mt-1">
-        {value}
-      </h3>
+      <h3 className="text-3xl font-black mt-1">{value}</h3>
 
-      <p className="text-xs text-slate-500 mt-2">
-        {description}
-      </p>
-
+      <p className="text-xs text-slate-500 mt-2">{description}</p>
     </motion.div>
   );
 }
@@ -661,24 +538,15 @@ function StatsCard({
 // Info Box
 // ======================================
 
-function InfoBox({
-  label,
-  value,
-  icon,
-}) {
+function InfoBox({ label, value, icon }) {
   return (
     <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
-
       <div className="flex items-center gap-2 text-slate-500 text-xs">
         {icon}
         {label}
       </div>
 
-      <p className="text-white font-semibold mt-2 truncate">
-        {value}
-      </p>
-
+      <p className="text-white font-semibold mt-2 truncate">{value}</p>
     </div>
   );
 }
-

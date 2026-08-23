@@ -1,4 +1,3 @@
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // ======================================
@@ -25,7 +24,6 @@ import Applicants from "./Pages/Projects/Applicants";
 // Freelancer Pages
 // ======================================
 import FreelancerDashboard from "./Pages/Dashboard/FreelancerDashboard";
-import FreelancerProjectDetails from "./Pages/Projects/FreelancerProjectDetails";
 import MyApplications from "./Pages/Projects/MyApplications";
 import MyWork from "./Pages/Projects/MyWork";
 
@@ -179,7 +177,7 @@ const router = createBrowserRouter([
 
               {
                 path: "/freelancer/project/:id",
-                element: <FreelancerProjectDetails />,
+                element: <ProjectDetails />,
               },
             ],
           },
@@ -194,11 +192,7 @@ const router = createBrowserRouter([
 
         children: [
           {
-            element: (
-              <RoleRoute
-                roles={["client", "freelancer"]}
-              />
-            ),
+            element: <RoleRoute roles={["client", "freelancer"]} />,
 
             children: [
               {
@@ -218,11 +212,7 @@ const router = createBrowserRouter([
 
         children: [
           {
-            element: (
-              <RoleRoute
-                roles={["client", "freelancer"]}
-              />
-            ),
+            element: <RoleRoute roles={["client", "freelancer"]} />,
 
             children: [
               {
@@ -244,4 +234,3 @@ const router = createBrowserRouter([
 export default function App() {
   return <RouterProvider router={router} />;
 }
-

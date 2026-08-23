@@ -8,6 +8,10 @@ import StepProjectType from "../../Components/createProject/StepProjectType";
 import AIAnalysis from "../../Components/createProject/AIAnalysis";
 import TeamBoard from "../../Components/createProject/TeamBoard";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://devhub-backend-production-113b.up.railway.app/api";
+
 export default function CreateProject() {
   const navigate = useNavigate();
 
@@ -15,23 +19,23 @@ export default function CreateProject() {
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
-  title: "",
-  description: "",
-  budget: "",
-  deadline: "",
-  category: "",
-  projectType: "",
+    title: "",
+    description: "",
+    budget: "",
+    deadline: "",
+    category: "",
+    projectType: "",
 
-  skills: [],
-  requirements: [],
+    skills: [],
+    requirements: [],
 
-  team: [],
+    team: [],
 
-  complexity: "",
-  duration: 0,
-  estimatedCost: 0,
-  matchScore: 0,
-});
+    complexity: "",
+    duration: 0,
+    estimatedCost: 0,
+    matchScore: 0,
+  });
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -40,26 +44,20 @@ export default function CreateProject() {
   };
 
   const handleSubmit = async (e) => {
-
-  if (e) {
-    e.preventDefault();
-  }
-
+    if (e) {
+      e.preventDefault();
+    }
 
     try {
       setLoading(true);
 
       const token = localStorage.getItem("token");
 
-    const { data } = await axios.post(
-  "https://devhub-backend-production-113b.up.railway.app/api/projects",
-  formData,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      const { data } = await axios.post(`${API_URL}/projects`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       alert(data.message);
 
@@ -73,7 +71,6 @@ export default function CreateProject() {
 
   return (
     <section className="min-h-screen bg-slate-950 py-12 px-5">
-
       {/* ========================= */}
       {/* STEP 1 */}
       {/* ========================= */}
@@ -117,29 +114,20 @@ export default function CreateProject() {
           </button>
 
           <div className="mb-8">
-
-            <h1 className="text-4xl font-bold">
-              Project Details
-            </h1>
+            <h1 className="text-4xl font-bold">Project Details</h1>
 
             <p className="text-slate-400 mt-2">
               Category :
-              <span className="text-violet-400 ml-2">
-                {formData.category}
-              </span>
+              <span className="text-violet-400 ml-2">{formData.category}</span>
             </p>
 
             <p className="text-slate-400">
               Project Type :
-              <span className="text-cyan-400 ml-2">
-                {formData.projectType}
-              </span>
+              <span className="text-cyan-400 ml-2">{formData.projectType}</span>
             </p>
-
           </div>
 
-         <form className="space-y-5">
-
+          <form className="space-y-5">
             <input
               type="text"
               name="title"
@@ -176,7 +164,6 @@ export default function CreateProject() {
             />
 
             <div className="flex gap-4">
-
               <button
                 type="button"
                 onClick={() => setStep(2)}
@@ -186,44 +173,42 @@ export default function CreateProject() {
               </button>
 
               <button
-  type="button"
-  onClick={() => setStep(4)}
-  className="w-1/2 bg-violet-600 hover:bg-violet-700 rounded-xl py-3 font-semibold transition"
->
-  Continue →
-</button>
-
+                type="button"
+                onClick={() => setStep(4)}
+                className="w-1/2 bg-violet-600 hover:bg-violet-700 rounded-xl py-3 font-semibold transition"
+              >
+                Continue →
+              </button>
             </div>
-
           </form>
         </motion.div>
       )}
 
       {/* ========================= */}
-{/* STEP 4 */}
-{/* ========================= */}
+      {/* STEP 4 */}
+      {/* ========================= */}
 
-{step === 4 && (
-  <AIAnalysis
-    formData={formData}
-    setFormData={setFormData}
-    back={() => setStep(3)}
-    next={() => setStep(5)}
-  />
-)}
+      {step === 4 && (
+        <AIAnalysis
+          formData={formData}
+          setFormData={setFormData}
+          back={() => setStep(3)}
+          next={() => setStep(5)}
+        />
+      )}
 
-{/* ========================= */}
-{/* STEP 5 */}
-{/* ========================= */}
+      {/* ========================= */}
+      {/* STEP 5 */}
+      {/* ========================= */}
 
-{step === 5 && (
-  <TeamBoard
-    formData={formData}
-    back={() => setStep(4)}
-    publish={handleSubmit}
-    loading={loading}
-  />
-)}
+      {step === 5 && (
+        <TeamBoard
+          formData={formData}
+          back={() => setStep(4)}
+          publish={handleSubmit}
+          loading={loading}
+        />
+      )}
     </section>
   );
 }

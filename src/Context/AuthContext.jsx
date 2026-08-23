@@ -4,6 +4,7 @@ import axios from "axios";
 const AuthContext = createContext();
 
 const API =
+  import.meta.env.VITE_API_URL ||
   "https://devhub-backend-production-113b.up.railway.app/api";
 
 export function AuthProvider({ children }) {

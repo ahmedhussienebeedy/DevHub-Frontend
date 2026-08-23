@@ -244,7 +244,7 @@ export default function ProjectDetails() {
   const canApply = user?.role === "freelancer";
 
   return (
-    <section className="min-h-screen bg-slate-950 text-white py-10 px-5">
+    <section className="min-h-screen min-w-0 bg-slate-950 text-white py-8 sm:py-10 px-4 sm:px-5">
       <div className="max-w-6xl mx-auto">
         {/* ======================================
             Back
@@ -285,7 +285,7 @@ export default function ProjectDetails() {
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-black">
+              <h1 className="break-words text-3xl sm:text-4xl md:text-5xl font-black">
                 {project.title}
               </h1>
 
@@ -294,7 +294,7 @@ export default function ProjectDetails() {
               </p>
             </div>
 
-            <div className="bg-slate-800 rounded-2xl p-6 min-w-[220px]">
+            <div className="w-full lg:w-auto bg-slate-800 rounded-2xl p-5 sm:p-6 lg:min-w-[220px]">
               <p className="text-slate-500 text-sm">Project Budget</p>
 
               <p className="text-3xl font-black text-green-400 mt-2">

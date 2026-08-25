@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import Payment from "../models/Payment.js";
 import Project from "../models/Project.js";
+import Application from "../models/Application.js";
 import Notification from "../models/Notification.js";
 import { sendNotification } from "../socket/socket.js";
 
@@ -30,23 +31,67 @@ export const createPaymentIntent = async (req, res) => {
       });
     }
 
-    // Freelancer must be selected
-    if (!project.freelancer) {
+    // Older projects may have the assigned freelancer only in the team or
+    // accepted application, while payments still use the legacy field.
+    let freelancerId = project.freelancer;
+
+    if (!freelancerId) {
+      const acceptedApplication = await Application.findOne({
+        project: project._id,
+        status: "accepted",
+      }).select("freelancer");
+
+      freelancerId =
+        acceptedApplication?.freelancer ||
+        project.team.find((member) => member.freelancer)?.freelancer;
+    }
+
+    if (!freelancerId) {
       return res.status(400).json({
         success: false,
         message: "No freelancer selected",
       });
     }
 
-    // Prevent duplicate payments
+    if (!project.freelancer) {
+      project.freelancer = freelancerId;
+      await project.save();
+    }
+
+    // Reuse an unfinished payment so returning to checkout does not create
+    // a second payment record or strand the existing Stripe intent.
     const existingPayment = await Payment.findOne({
       project: project._id,
     });
 
     if (existingPayment) {
+      if (
+        existingPayment.status === "pending" &&
+        existingPayment.stripePaymentIntentId
+      ) {
+        const existingIntent = await stripe.paymentIntents.retrieve(
+          existingPayment.stripePaymentIntentId
+        );
+
+        const reusableIntentStatuses = [
+          "requires_payment_method",
+          "requires_confirmation",
+          "requires_action",
+          "processing",
+        ];
+
+        if (reusableIntentStatuses.includes(existingIntent.status)) {
+          return res.status(200).json({
+            success: true,
+            clientSecret: existingIntent.client_secret,
+            payment: existingPayment,
+          });
+        }
+      }
+
       return res.status(400).json({
         success: false,
-        message: "Payment already exists",
+        message: "Payment has already been completed",
       });
     }
 
@@ -57,14 +102,14 @@ export const createPaymentIntent = async (req, res) => {
       metadata: {
         projectId: project._id.toString(),
         clientId: req.user.id,
-        freelancerId: project.freelancer.toString(),
+        freelancerId: freelancerId.toString(),
       },
     });
 
     const payment = await Payment.create({
       project: project._id,
       client: req.user.id,
-      freelancer: project.freelancer,
+      freelancer: freelancerId,
       amount: project.budget,
       stripePaymentIntentId: paymentIntent.id,
       status: "pending",

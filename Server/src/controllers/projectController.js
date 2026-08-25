@@ -227,10 +227,13 @@ export const getMyWork = async (req, res) => {
       },
     });
 
-    const totalEarnings = payments.reduce(
-      (total, payment) => total + payment.amount,
-      0
-    );
+    const totalEarnings = payments.reduce((total, payment) => {
+      const recipient = payment.recipients?.find(
+        (item) => item.freelancer.toString() === req.user.id
+      );
+
+      return total + (recipient?.amount ?? payment.amount);
+    }, 0);
 
     res.status(200).json({
       success: true,

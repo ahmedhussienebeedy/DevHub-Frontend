@@ -1,5 +1,21 @@
 import mongoose from "mongoose";
 
+const paymentRecipientSchema = new mongoose.Schema(
+  {
+    freelancer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+  },
+  { _id: false }
+);
+
 const paymentSchema = new mongoose.Schema(
   {
     // Project
@@ -21,6 +37,11 @@ const paymentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+
+    recipients: {
+      type: [paymentRecipientSchema],
+      default: [],
     },
 
     // Amount

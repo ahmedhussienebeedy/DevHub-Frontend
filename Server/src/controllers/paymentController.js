@@ -31,27 +31,35 @@ export const createPaymentIntent = async (req, res) => {
       });
     }
 
-    // Older projects may have the assigned freelancer only in the team or
-    // accepted application, while payments still use the legacy field.
-    let freelancerId = project.freelancer;
+    const acceptedApplications = await Application.find({
+      project: project._id,
+      status: "accepted",
+    }).select("freelancer price");
 
-    if (!freelancerId) {
-      const acceptedApplication = await Application.findOne({
-        project: project._id,
-        status: "accepted",
-      }).select("freelancer");
+    const recipients = acceptedApplications.map((application) => ({
+      freelancer: application.freelancer,
+      amount: application.price,
+    }));
 
-      freelancerId =
-        acceptedApplication?.freelancer ||
-        project.team.find((member) => member.freelancer)?.freelancer;
+    if (recipients.length === 0 && project.freelancer) {
+      recipients.push({
+        freelancer: project.freelancer,
+        amount: project.budget,
+      });
     }
 
-    if (!freelancerId) {
+    if (recipients.length === 0) {
       return res.status(400).json({
         success: false,
         message: "No freelancer selected",
       });
     }
+
+    const totalAmount = recipients.reduce(
+      (total, recipient) => total + recipient.amount,
+      0
+    );
+    const freelancerId = recipients[0].freelancer;
 
     if (!project.freelancer) {
       project.freelancer = freelancerId;
@@ -96,13 +104,19 @@ export const createPaymentIntent = async (req, res) => {
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(project.budget * 100),
+      amount: Math.round(totalAmount * 100),
       currency: "usd",
       payment_method_types: ["card"],
       metadata: {
         projectId: project._id.toString(),
         clientId: req.user.id,
         freelancerId: freelancerId.toString(),
+        recipients: JSON.stringify(
+          recipients.map((recipient) => ({
+            freelancerId: recipient.freelancer.toString(),
+            amount: recipient.amount,
+          }))
+        ),
       },
     });
 
@@ -110,7 +124,8 @@ export const createPaymentIntent = async (req, res) => {
       project: project._id,
       client: req.user.id,
       freelancer: freelancerId,
-      amount: project.budget,
+      amount: totalAmount,
+      recipients,
       stripePaymentIntentId: paymentIntent.id,
       status: "pending",
     });
@@ -190,24 +205,24 @@ export const confirmPayment = async (req, res) => {
       await project.save();
     }
 
-    const notification = await Notification.create({
-      user: payment.freelancer,
-      sender: payment.client,
-      project: payment.project,
-      type: "payment",
-      title: "💰 Payment Received",
-      body: `The client has completed payment for "${project.title}".`,
-    });
+    const recipients = payment.recipients?.length
+      ? payment.recipients
+      : [{ freelancer: payment.freelancer, amount: payment.amount }];
 
-    await notification.populate("sender", "name");
-    await notification.populate("project", "title");
+    for (const recipient of recipients) {
+      const notification = await Notification.create({
+        user: recipient.freelancer,
+        sender: payment.client,
+        project: payment.project,
+        type: "payment",
+        title: "💰 Payment Received",
+        body: `You received $${recipient.amount} for "${project.title}".`,
+      });
 
-    console.log("📨 Sending payment notification...");
-    console.log("Freelancer:", payment.freelancer.toString());
-
-    sendNotification(payment.freelancer, notification);
-
-    console.log("✅ Notification sent successfully");
+      await notification.populate("sender", "name");
+      await notification.populate("project", "title");
+      sendNotification(recipient.freelancer, notification);
+    }
 
     res.status(200).json({
       success: true,
